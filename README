@@ -1,3 +1,4 @@
-This application boardcasts broadcast your clipboard to other hosts with RCAP networkwide.
+This application boardcasts your clipboard to other hosts with RCAP networkwide.
 
 This project is written in Scala using Eclipse and the Akka remote actor library. 
+In the experimental branch are new experiments and futher development such as Copy and Paste of images and files.
