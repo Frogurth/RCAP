@@ -1,0 +1,3 @@
+*.class
+bin/*
+.scala_dependencies
