@@ -32,7 +32,7 @@ package object util {
   def readConfFile(filename: String)(f: Array[String] => Unit) {
     val configFile = new File(filename)
     if (!(configFile.exists && configFile.canRead))
-      Logger error ("Cannot load configuration file " + filename + "!")
+      Logger error ("Cannot load configuration file " + filename + ". Use default values.")
     else {
       val lines = Source.fromFile(filename).getLines
 
