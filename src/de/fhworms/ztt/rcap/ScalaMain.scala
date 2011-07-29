@@ -1,4 +1,4 @@
-/**
+/*
  * Copyright (C) 2011 the original author or authors.
  * See the license.txt file distributed with this work for additional
  * information regarding copyright ownership.
@@ -29,10 +29,15 @@ import scala.util.matching.Regex
 import akka.AkkaException
 import de.fhworms.ztt.rcap.logger._
 
+/**
+ * @author Waldemar Artes
+ */
 object ScalaMain {
   def main(args: Array[String]): Unit = {
     if (System.getenv.containsKey("RCAP_HOME"))
       HOME = System.getenv.get("RCAP_HOME")
+    else
+      Logger info "The environment variable RCAP_HOME was not defined. '.' is now the home directory of this application"
     Logger(HOME + "/rcap.log")
 
     initializeConfiguration(args)
