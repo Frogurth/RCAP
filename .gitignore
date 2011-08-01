@@ -1,3 +1,8 @@
 *.class
 bin/*
 .scala_dependencies
+.DS_Store
+.classpath
+.project
+.settings/*
+.project
