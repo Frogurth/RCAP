@@ -16,17 +16,31 @@
  * limitations under the License.
  */
 package de.fhworms.ztt.rcap
-package messages
 
-case class Message
-case class ClipboardChanged(content: String) extends Message
-case class ClipboardChangedRemote(content: String) extends Message
-case class ConnectTo(host: String, port: Int) extends Message
-case class RegisterMe(host: String, port: Int) extends Message
-case class UnregisterMe(host: String, port: Int) extends Message
-case class PublishMe(host: String, port: Int, token: String) extends Message
-case class NewBot(host: String, bot: Int) extends Message
-case class Ping(token: String) extends Message
-case object Stop extends Message
-case object Shutdown extends Message
-case object Pong extends Message
+import java.io.File
+import de.fhworms.ztt.rcap.logger._
+import scala.io.Source
+
+package object util {
+  implicit def any2PipelineSyntax[A](a: A) = new {
+    def |>[B](f: A => B): B = f(a)
+  }
+
+  def addShutDownHook(hook: => Unit) =
+    Runtime.getRuntime().addShutdownHook(new Thread {
+      override def run = hook
+    })
+
+  def readConfFile(filename: String)(f: Array[String] => Unit) {
+    val configFile = new File(filename)
+    if (!(configFile.exists && configFile.canRead))
+      Logger error ("Cannot load configuration file " + filename + ". Use default values.")
+    else {
+      val lines = Source.fromFile(filename).getLines
+
+      lines.foreach { line =>
+        line.replace(" ", "").split("=") |> f
+      }
+    }
+  }
+}

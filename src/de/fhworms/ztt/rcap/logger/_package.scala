@@ -15,12 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package de.fhworms.ztt
-
-package object rcap {
-  var HOME = ""
-  var PORT = 9999
-  var HOST = ""
-  var TOKEN = ""
-  var remoteHosts: List[String] = null
+package de.fhworms.ztt.rcap
+package object logger {
+  def log = Logger
 }
