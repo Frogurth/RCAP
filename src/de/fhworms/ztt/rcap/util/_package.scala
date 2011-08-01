@@ -16,9 +16,11 @@
  * limitations under the License.
  */
 package de.fhworms.ztt.rcap
+
 import java.io.File
 import de.fhworms.ztt.rcap.logger._
 import scala.io.Source
+
 package object util {
   implicit def any2PipelineSyntax[A](a: A) = new {
     def |>[B](f: A => B): B = f(a)
@@ -32,7 +34,7 @@ package object util {
   def readConfFile(filename: String)(f: Array[String] => Unit) {
     val configFile = new File(filename)
     if (!(configFile.exists && configFile.canRead))
-      Logger error ("Cannot load configuration file " + filename + "!")
+      Logger error ("Cannot load configuration file " + filename + ". Use default values.")
     else {
       val lines = Source.fromFile(filename).getLines
 
