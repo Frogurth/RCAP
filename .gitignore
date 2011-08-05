@@ -1,5 +1,6 @@
 *.class
 bin/*
+build/*
 .scala_dependencies
 .DS_Store
 .classpath
