@@ -17,10 +17,33 @@
  */
 package de.fhworms.ztt
 
+/**
+ * Global getter and setter methods for variables
+ */
 package object rcap {
-  var HOME = ""
-  var PORT = 9999
-  var HOST = ""
-  var TOKEN = ""
-  var remoteHosts: List[String] = null
+  private var home = "."
+  private var port = 9999
+  private var host = ""
+  private var token = ""
+  private var remoteHosts: List[String] = null
+
+  def remoteHostNames = remoteHosts
+
+  def addRemoteHostName(hostName: String) = {
+    if (remoteHosts == null)
+      remoteHosts = Nil
+    remoteHosts = hostName :: remoteHosts
+  }
+
+  def HOME = home
+  def HOME_=(value: String) = home = value
+
+  def PORT = port
+  def PORT_=(value: Int) = port = value
+
+  def HOST = host
+  def HOST_=(value: String) = host = value
+
+  def TOKEN = token
+  def TOKEN_=(value: String) = token = value
 }

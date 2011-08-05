@@ -24,7 +24,6 @@ import scala.collection.mutable.ListBuffer
 import java.net.InetAddress
 import akka.actor.ActorRef
 import akka.actor.Actor
-import akka.actor.Actor._
 import scala.util.matching.Regex
 import akka.AkkaException
 import de.fhworms.ztt.rcap.logger._
@@ -44,7 +43,7 @@ object ScalaMain {
 
     registerActor
 
-    val me = remote.actorFor(HOST + "-rcap",
+    val me = Actor.remote.actorFor(HOST + "-rcap",
       HOST, PORT)
 
     Logger.info("Actor " + HOST + "-rcap registered")
@@ -52,8 +51,8 @@ object ScalaMain {
     addShutDownHook {
       me !! Shutdown
       me ! Stop
-      remote.unregister(me)
-      remote.shutdown
+      Actor.remote.unregister(me)
+      Actor.remote.shutdown
       Logger.stop
     }
 
@@ -70,7 +69,7 @@ object ScalaMain {
     hosts match {
       case head :: tail =>
         Logger.info("Trying connecting to " + head + "-rcap")
-        val rm = remote.actorFor(head + "-rcap", head, PORT)
+        val rm = Actor.remote.actorFor(head + "-rcap", head, PORT)
         val result = rm !! Ping(TOKEN)
         result match {
           case Some(Pong) => me ! ConnectTo(head, PORT)
@@ -83,9 +82,9 @@ object ScalaMain {
   }
 
   def registerActor = {
-    remote.start(HOST, PORT)
+    Actor.remote.start(HOST, PORT)
     Logger.info("Remote started at " + HOST + " " + PORT)
-    remote.register(HOST + "-rcap", actorOf[RcapActor])
+    Actor.remote.register(HOST + "-rcap", Actor.actorOf[RcapActor])
   }
 
   def initializeConfiguration(args: Array[String]) = {
@@ -111,10 +110,9 @@ object ScalaMain {
       }
 
       case Array("remotehosts", hosts) =>
-        remoteHosts = Nil
         hosts.split(",").foreach { host =>
           if (host != HOST)
-            remoteHosts = host :: remoteHosts
+            addRemoteHostName(host)
         }
       case _ =>
     }

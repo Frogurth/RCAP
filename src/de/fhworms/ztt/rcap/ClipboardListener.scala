@@ -17,7 +17,7 @@
  */
 package de.fhworms.ztt.rcap
 import akka.actor.ActorRef
-import akka.actor.Actor._
+import akka.actor.Actor
 import java.net.InetAddress
 import de.fhworms.ztt.rcap.messages._
 import de.fhworms.ztt.rcap.util._
@@ -36,33 +36,16 @@ object ClipboardListener {
 
     initializeConfiguration(args)
 
-    //    val server = getServer
-    val listener = actorOf(new ListenerActor(sleepTime)).start
+    val listener = Actor.actorOf(new ListenerActor(sleepTime)).start
     listener ! "Repeat"
 
     addShutDownHook {
       Logger.stop
       listener ! Stop
     }
-
-    //    Logger.info("Connected to Actor: " + HOST + "-rcap")
-    //    var prevContent = de.fhworms.ztt.rcap.clipboard.TextClipboard.content()
-    //    while (true) {
-    //      Thread.sleep(sleepTime)
-    //      try {
-    //        val content = de.fhworms.ztt.rcap.clipboard.TextClipboard.content()
-    //        if (content != prevContent) {
-    //          server ! ClipboardChanged(content)
-    //          prevContent = content
-    //          Logger.debug("Content of the clipboard has changed to:\n\t" + content)
-    //        }
-    //      } catch {
-    //        case e: Exception => Logger warning e.getStackTraceString
-    //      }
-    //    }
   }
 
-  private def getServer = remote.actorFor(HOST + "-rcap",
+  private def getServer = Actor.remote.actorFor(HOST + "-rcap",
     HOST,
     PORT)
 
